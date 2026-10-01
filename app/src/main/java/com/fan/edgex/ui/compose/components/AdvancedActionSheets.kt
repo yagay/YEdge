@@ -198,6 +198,7 @@ fun VariableSetActionSheet(prefKey: String, toggle: Boolean, onDismiss: () -> Un
             val dir = "/data/system/edgex/vars"
             val command = if (toggle) {
                 "mkdir -p $dir; f=$dir/$safeName; v=\$(cat \"\$f\" 2>/dev/null); if [ \"\$v\" = true ]; then printf false > \"\$f\"; else printf true > \"\$f\"; fi"
+                    .replace("\\$", "$")
             } else {
                 "mkdir -p $dir; printf %s ${AutomationCodec.shellQuote(value)} > $dir/$safeName"
             }
