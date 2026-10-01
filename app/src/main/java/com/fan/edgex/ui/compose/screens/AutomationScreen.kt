@@ -255,10 +255,27 @@ fun AutomationScreen(
                             val info = context.packageManager.getApplicationInfo(rule.packageName, 0)
                             context.packageManager.getApplicationLabel(info).toString()
                         }.getOrDefault(rule.packageName)
+                        val stateLabel = if (rule.state == AutomationConfig.APP_STATE_EXIT) "Exit" else "Enter"
                         EdgeXRow(
-                            title = appLabel,
+                            title = "$appLabel · $stateLabel",
                             subtitle = rule.label.ifBlank { rule.action },
                             icon = EdgeXIcons.LaunchApp,
+                            onClick = {
+                                val nextState = if (rule.state == AutomationConfig.APP_STATE_ENTER) {
+                                    AutomationConfig.APP_STATE_EXIT
+                                } else {
+                                    AutomationConfig.APP_STATE_ENTER
+                                }
+                                context.putConfig(
+                                    AutomationConfig.FOREGROUND_RULES,
+                                    AutomationConfig.encodeForegroundRules(
+                                        foregroundRules.map { existing ->
+                                            if (existing.id == rule.id) existing.copy(state = nextState) else existing
+                                        },
+                                    ),
+                                )
+                                refreshTick++
+                            },
                         ) {
                             DeleteText {
                                 context.putConfig(
