@@ -17,6 +17,17 @@ enum class SecondaryType {
     SubGesture,
     Condition,
     MultiAction,
+    Delay,
+    InputKey,
+    InputText,
+    InputTap,
+    InputSwipe,
+    LaunchActivity,
+    VariableSet,
+    VariableToggle,
+    Toast,
+    TextToSpeech,
+    Notification,
     ;
 
     companion object {
@@ -29,6 +40,17 @@ enum class SecondaryType {
             "sub_gesture" -> SubGesture
             "condition" -> Condition
             "multi_action" -> MultiAction
+            "delay" -> Delay
+            "input_key" -> InputKey
+            "input_text" -> InputText
+            "input_tap" -> InputTap
+            "input_swipe" -> InputSwipe
+            "launch_activity" -> LaunchActivity
+            "set_variable" -> VariableSet
+            "toggle_variable" -> VariableToggle
+            "show_toast" -> Toast
+            "speak_text" -> TextToSpeech
+            "post_notification" -> Notification
             else -> null
         }
     }
@@ -155,6 +177,17 @@ fun SecondaryActionDispatcher(
             )
         }
 
+        SecondaryType.Delay -> DelayActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.InputKey -> InputKeyActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.InputText -> InputTextActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.InputTap -> InputTapActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.InputSwipe -> InputSwipeActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.LaunchActivity -> LaunchActivityActionSheet(prefKey, onDismiss, onSaved)
+        SecondaryType.VariableSet -> VariableSetActionSheet(prefKey, toggle = false, onDismiss = onDismiss, onSaved = onSaved)
+        SecondaryType.VariableToggle -> VariableSetActionSheet(prefKey, toggle = true, onDismiss = onDismiss, onSaved = onSaved)
+        SecondaryType.Toast -> FeedbackActionSheet(prefKey, "toast", R.string.action_show_toast, onDismiss, onSaved)
+        SecondaryType.TextToSpeech -> FeedbackActionSheet(prefKey, "tts", R.string.action_speak_text, onDismiss, onSaved)
+        SecondaryType.Notification -> FeedbackActionSheet(prefKey, "notification", R.string.action_post_notification, onDismiss, onSaved)
         null -> {}
     }
 }
