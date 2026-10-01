@@ -99,9 +99,15 @@ internal object AutomationTriggerEngine {
                 when (intent.action) {
                     Intent.ACTION_BOOT_COMPLETED -> fire(AutomationConfig.EVENT_BOOT_COMPLETED)
                     Intent.ACTION_SCREEN_ON -> fire(AutomationConfig.EVENT_SCREEN_ON)
-                    Intent.ACTION_SCREEN_OFF -> fire(AutomationConfig.EVENT_SCREEN_OFF)
+                    Intent.ACTION_SCREEN_OFF -> {
+                        AutomationKeyManager.reset()
+                        fire(AutomationConfig.EVENT_SCREEN_OFF)
+                    }
                     Intent.ACTION_USER_PRESENT -> fire(AutomationConfig.EVENT_USER_PRESENT)
-                    Intent.ACTION_USER_UNLOCKED -> fire(AutomationConfig.EVENT_USER_UNLOCKED)
+                    Intent.ACTION_USER_UNLOCKED -> {
+                        AutomationKeyManager.invalidateConfig()
+                        fire(AutomationConfig.EVENT_USER_UNLOCKED)
+                    }
                     Intent.ACTION_POWER_CONNECTED -> fire(AutomationConfig.EVENT_POWER_CONNECTED)
                     Intent.ACTION_POWER_DISCONNECTED -> fire(AutomationConfig.EVENT_POWER_DISCONNECTED)
                 }
