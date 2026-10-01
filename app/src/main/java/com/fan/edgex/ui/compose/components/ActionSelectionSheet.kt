@@ -44,6 +44,8 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("launch_app", R.string.action_launch_app, EdgeXIcons.LaunchApp, needsSecondary = true),
     ActionSelectionItem("app_shortcut", R.string.action_app_shortcut, EdgeXIcons.AppShortcut, needsSecondary = true),
     ActionSelectionItem("launch_activity", R.string.action_launch_activity, EdgeXIcons.LaunchApp, needsSecondary = true),
+    ActionSelectionItem("freeze_app", R.string.action_freeze_app, EdgeXIcons.Freeze, needsSecondary = true),
+    ActionSelectionItem("unfreeze_app", R.string.action_unfreeze_app, EdgeXIcons.Refreeze, needsSecondary = true),
     ActionSelectionItem("clear_background", R.string.action_clear_background, EdgeXIcons.ClearBackground),
     ActionSelectionItem("freezer_drawer", R.string.action_freezer_drawer, EdgeXIcons.Freeze),
     ActionSelectionItem("refreeze", R.string.action_refreeze, EdgeXIcons.Refreeze),
