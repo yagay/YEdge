@@ -10,6 +10,8 @@ import com.fan.edgex.ui.compose.screens.SubGestureSheet
 
 enum class SecondaryType {
     AppPicker,
+    FreezeApp,
+    UnfreezeApp,
     MusicControl,
     FastScroll,
     ShellCommand,
@@ -33,6 +35,8 @@ enum class SecondaryType {
     companion object {
         fun fromCode(code: String): SecondaryType? = when (code) {
             "launch_app" -> AppPicker
+            "freeze_app" -> FreezeApp
+            "unfreeze_app" -> UnfreezeApp
             "music_control" -> MusicControl
             "fast_scroll" -> FastScroll
             "shell_command" -> ShellCommand
@@ -77,6 +81,31 @@ fun SecondaryActionDispatcher(
                     context.putConfigsSync(
                         prefKey to "launch_app:${app.packageName}",
                         "${prefKey}_label" to app.label,
+                        "${prefKey}_title" to app.label,
+                    )
+                    onSaved()
+                },
+            )
+        }
+
+        SecondaryType.FreezeApp,
+        SecondaryType.UnfreezeApp -> {
+            val freeze = type == SecondaryType.FreezeApp
+            AppPickerSheet(
+                open = true,
+                onDismiss = onDismiss,
+                onPick = { app ->
+                    val command = if (freeze) {
+                        "pm disable-user --user 0 ${app.packageName}"
+                    } else {
+                        "pm enable --user 0 ${app.packageName}"
+                    }
+                    val label = context.getString(
+                        if (freeze) R.string.action_freeze_app else R.string.action_unfreeze_app,
+                    ) + ": " + app.label
+                    context.putConfigsSync(
+                        prefKey to "shell:true:$command",
+                        "${prefKey}_label" to label,
                         "${prefKey}_title" to app.label,
                     )
                     onSaved()
