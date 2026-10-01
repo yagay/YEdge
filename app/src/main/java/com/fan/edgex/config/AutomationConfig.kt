@@ -10,6 +10,9 @@ object AutomationConfig {
     const val FOREGROUND_RULES = "automation_foreground_rules"
     const val CUSTOM_KEY_RULES = "automation_custom_key_rules"
 
+    const val APP_STATE_ENTER = "enter"
+    const val APP_STATE_EXIT = "exit"
+
     const val EVENT_BOOT_COMPLETED = "boot_completed"
     const val EVENT_SCREEN_ON = "screen_on"
     const val EVENT_SCREEN_OFF = "screen_off"
@@ -65,6 +68,7 @@ object AutomationConfig {
     data class ForegroundRule(
         val id: String,
         val packageName: String,
+        val state: String = APP_STATE_ENTER,
         val action: String,
         val label: String = "",
         val enabled: Boolean = true,
@@ -120,6 +124,7 @@ object AutomationConfig {
             put(JSONObject().apply {
                 put("id", rule.id)
                 put("package", rule.packageName)
+                put("state", rule.state)
                 put("action", rule.action)
                 put("label", rule.label)
                 put("enabled", rule.enabled)
@@ -134,11 +139,15 @@ object AutomationConfig {
                 val obj = array.optJSONObject(i) ?: continue
                 val pkg = obj.optString("package").trim()
                 val action = obj.optString("action").trim()
+                val state = obj.optString("state", APP_STATE_ENTER)
+                    .takeIf { it == APP_STATE_ENTER || it == APP_STATE_EXIT }
+                    ?: APP_STATE_ENTER
                 if (pkg.isBlank() || action.isBlank() || action == "none") continue
                 add(
                     ForegroundRule(
                         id = obj.optString("id").ifBlank { "foreground_$i" },
                         packageName = pkg,
+                        state = state,
                         action = action,
                         label = obj.optString("label"),
                         enabled = obj.optBoolean("enabled", true),
