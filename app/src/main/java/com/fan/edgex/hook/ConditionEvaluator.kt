@@ -50,9 +50,9 @@ internal object ConditionEvaluator {
             conditionCode == "headset_connected" -> isHeadsetConnected(context)
             conditionCode == ConditionStore.FOREGROUND_APP -> isForegroundAppMatch(context, foregroundAppConfig)
             conditionCode.startsWith("battery_at_least:") ->
-                batteryLevel(context) >= conditionCode.substringAfter(':').toIntOrNull()?.coerceIn(0, 100) ?: 101
+                evaluateBatteryThreshold(context, conditionCode.substringAfter(':'), atLeast = true)
             conditionCode.startsWith("battery_at_most:") ->
-                batteryLevel(context) <= conditionCode.substringAfter(':').toIntOrNull()?.coerceIn(0, 100) ?: -1
+                evaluateBatteryThreshold(context, conditionCode.substringAfter(':'), atLeast = false)
             conditionCode.startsWith("time_between:") -> isWithinTimeRange(conditionCode.substringAfter(':'))
             conditionCode.startsWith("wifi_ssid:") -> currentSsid(context) == AutomationCodec.decode(conditionCode.substringAfter(':'))
             conditionCode.startsWith("variable_equals:") -> variableEquals(conditionCode)
@@ -61,6 +61,13 @@ internal object ConditionEvaluator {
         }
     } catch (_: Throwable) {
         false
+    }
+
+    private fun evaluateBatteryThreshold(context: Context, raw: String, atLeast: Boolean): Boolean {
+        val threshold = raw.toIntOrNull()?.takeIf { it in 0..100 } ?: return false
+        val level = batteryLevel(context)
+        if (level < 0) return false
+        return if (atLeast) level >= threshold else level <= threshold
     }
 
     private fun isAutoBrightnessOn(context: Context) =
