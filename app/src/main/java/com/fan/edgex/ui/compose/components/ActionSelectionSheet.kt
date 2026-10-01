@@ -43,6 +43,7 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("pie", R.string.action_pie, EdgeXIcons.Pie),
     ActionSelectionItem("launch_app", R.string.action_launch_app, EdgeXIcons.LaunchApp, needsSecondary = true),
     ActionSelectionItem("app_shortcut", R.string.action_app_shortcut, EdgeXIcons.AppShortcut, needsSecondary = true),
+    ActionSelectionItem("launch_activity", R.string.action_launch_activity, EdgeXIcons.LaunchApp, needsSecondary = true),
     ActionSelectionItem("clear_background", R.string.action_clear_background, EdgeXIcons.ClearBackground),
     ActionSelectionItem("freezer_drawer", R.string.action_freezer_drawer, EdgeXIcons.Freeze),
     ActionSelectionItem("refreeze", R.string.action_refreeze, EdgeXIcons.Refreeze),
@@ -51,6 +52,10 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("clipboard", R.string.action_clipboard, EdgeXIcons.Clipboard),
     ActionSelectionItem("universal_copy", R.string.action_universal_copy, EdgeXIcons.UniversalCopy),
     ActionSelectionItem("lock_screen", R.string.action_lock_screen, EdgeXIcons.Lock),
+    ActionSelectionItem("power_dialog", R.string.action_power_dialog, R.drawable.ic_power),
+    ActionSelectionItem("shell:true:input keyevent 224", R.string.action_wake_screen, R.drawable.ic_power),
+    ActionSelectionItem("shell:true:reboot", R.string.action_reboot, EdgeXIcons.Restart),
+    ActionSelectionItem("shell:true:reboot -p", R.string.action_shutdown, R.drawable.ic_power),
     ActionSelectionItem("kill_app", R.string.action_kill_app, EdgeXIcons.KillApp),
     ActionSelectionItem("prev_app", R.string.action_prev_app, EdgeXIcons.PrevApp),
     ActionSelectionItem("next_app", R.string.action_next_app, EdgeXIcons.NextApp),
@@ -62,6 +67,19 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("fast_scroll", R.string.action_fast_scroll, EdgeXIcons.FastScroll, needsSecondary = true),
     ActionSelectionItem("multi_action", R.string.action_multi_action, EdgeXIcons.Multi, needsSecondary = true),
     ActionSelectionItem("condition", R.string.action_condition, EdgeXIcons.Condition, needsSecondary = true),
+    ActionSelectionItem("delay", R.string.action_delay, EdgeXIcons.Multi, needsSecondary = true),
+    ActionSelectionItem("set_variable", R.string.action_set_variable, EdgeXIcons.Condition, needsSecondary = true),
+    ActionSelectionItem("toggle_variable", R.string.action_toggle_variable, EdgeXIcons.Condition, needsSecondary = true),
+    ActionSelectionItem("input_key", R.string.action_input_key, EdgeXIcons.Keys, needsSecondary = true),
+    ActionSelectionItem("input_text", R.string.action_input_text, EdgeXIcons.Terminal, needsSecondary = true),
+    ActionSelectionItem("input_tap", R.string.action_input_tap, EdgeXIcons.Gesture, needsSecondary = true),
+    ActionSelectionItem("input_swipe", R.string.action_input_swipe, EdgeXIcons.Gesture, needsSecondary = true),
+    ActionSelectionItem("show_toast", R.string.action_show_toast, EdgeXIcons.Notifications, needsSecondary = true),
+    ActionSelectionItem("speak_text", R.string.action_speak_text, EdgeXIcons.Music, needsSecondary = true),
+    ActionSelectionItem("post_notification", R.string.action_post_notification, EdgeXIcons.Notifications, needsSecondary = true),
+    ActionSelectionItem("shell:true:settings put system accelerometer_rotation 1", R.string.action_rotation_auto, R.drawable.ic_screen_rotation),
+    ActionSelectionItem("shell:true:settings put system accelerometer_rotation 0; settings put system user_rotation 0", R.string.action_rotation_portrait, R.drawable.ic_screen_rotation),
+    ActionSelectionItem("shell:true:settings put system accelerometer_rotation 0; settings put system user_rotation 1", R.string.action_rotation_landscape, R.drawable.ic_screen_rotation),
     ActionSelectionItem(AppConfig.CUSTOM_PANEL_ACTION, R.string.action_custom_panel, EdgeXIcons.CustomPanel),
     ActionSelectionItem(AppConfig.SIDE_BAR_LEFT_ACTION, R.string.action_left_side_bar, EdgeXIcons.SideBarLeft),
     ActionSelectionItem(AppConfig.SIDE_BAR_RIGHT_ACTION, R.string.action_right_side_bar, EdgeXIcons.SideBarRight),
@@ -69,6 +87,10 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("toggle_wifi", R.string.action_toggle_wifi, EdgeXIcons.Wifi),
     ActionSelectionItem("toggle_mobile_data", R.string.action_toggle_mobile_data, EdgeXIcons.MobileData),
     ActionSelectionItem("game_mode", R.string.action_game_mode, EdgeXIcons.GameMode),
+    ActionSelectionItem("shell:true:am startservice -n com.fan.edgex/.automation.FloatingToolService --es mode tools", R.string.action_floating_tools, EdgeXIcons.CustomPanel),
+    ActionSelectionItem("shell:true:am start -n com.fan.edgex/.automation.PointerActivity", R.string.action_pointer, EdgeXIcons.Gesture),
+    ActionSelectionItem("shell:true:am start -n com.fan.edgex/.automation.ScreenPenActivity", R.string.action_screen_pen, EdgeXIcons.PartialScreenshot),
+    ActionSelectionItem("shell:true:am startservice -n com.fan.edgex/.automation.FloatingToolService --es mode filter", R.string.action_screen_filter, EdgeXIcons.BrightnessDown),
 )
 
 @Composable
@@ -126,7 +148,6 @@ fun ActionSelectionSheet(
             ),
         )
 
-        // Action Grid List
         Column(
             modifier = Modifier
                 .fillMaxWidth()
