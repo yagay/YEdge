@@ -22,10 +22,6 @@ import com.topjohnwu.superuser.Shell
  */
 object AppActionExecutor {
 
-    /**
-     * Execute an action. Returns true if handled, false if caller must handle it
-     * (e.g. system_server-only actions).
-     */
     fun execute(context: Context, code: String): Boolean = when {
         code == "volume_up"   -> { adjustVolume(context, true);  true }
         code == "volume_down" -> { adjustVolume(context, false); true }
@@ -39,6 +35,7 @@ object AppActionExecutor {
         code.startsWith("launch_app:") -> { launchApp(context, code); true }
         code.startsWith("app_shortcut:") -> { launchShortcut(context, code); true }
         code.startsWith("shell:") -> { executeShell(context, code); true }
+        code.startsWith("delay:") -> true
         else -> false
     }
 
@@ -130,17 +127,15 @@ object AppActionExecutor {
         }
     }
 
-    /**
-     * Execute a list of steps sequentially with action-type-aware delays between them.
-     * Uses a main-thread Handler so callers don't need to manage one.
-     */
     fun executeSteps(context: Context, steps: List<MultiActionStep>, handler: Handler = Handler(Looper.getMainLooper())) {
         var delay = 0L
         for (step in steps) {
             if (step.code.isBlank() || step.code == "none") continue
             val code = step.code
             handler.postDelayed({
-                runCatching { execute(context, code) }
+                if (!code.startsWith("delay:")) {
+                    runCatching { execute(context, code) }
+                }
             }, delay)
             delay += stepSettleDuration(code)
         }
@@ -148,9 +143,11 @@ object AppActionExecutor {
 
     /**
      * How long to wait after dispatching [code] before the next step is safe to fire.
-     * Matches the delays used in GestureActionDispatcher for consistency.
+     * `delay:<ms>` is a first-class Multi Action step and can be used anywhere a
+     * deterministic pause is required.
      */
     fun stepSettleDuration(code: String): Long = when {
+        code.startsWith("delay:") -> code.substringAfter(':').toLongOrNull()?.coerceIn(0L, 600_000L) ?: 0L
         code == "home" || code == "back" || code == "recent" || code == "recents"
             || code == "lock_screen" || code == "notifications" || code == "expand_notifications"
             || code == "quick_settings" -> 600L
