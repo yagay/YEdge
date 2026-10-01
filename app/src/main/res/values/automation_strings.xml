@@ -1,0 +1,73 @@
+<resources>
+    <string name="menu_automation">Automation</string>
+    <string name="menu_automation_desc">Events, schedules, custom keys and advanced actions</string>
+    <string name="automation_events">Event triggers</string>
+    <string name="automation_schedules">Schedules</string>
+    <string name="automation_foreground_apps">Foreground app triggers</string>
+    <string name="automation_custom_keys">Custom hardware keys</string>
+    <string name="automation_add">Add</string>
+    <string name="automation_enabled">Enable automation</string>
+
+    <string name="event_boot_completed">Boot completed</string>
+    <string name="event_screen_on">Screen on</string>
+    <string name="event_screen_off">Screen off</string>
+    <string name="event_user_present">User present</string>
+    <string name="event_user_unlocked">User unlocked</string>
+    <string name="event_power_connected">Power connected</string>
+    <string name="event_power_disconnected">Power disconnected</string>
+    <string name="event_wifi_connected">Wi-Fi connected</string>
+    <string name="event_wifi_disconnected">Wi-Fi disconnected</string>
+    <string name="event_network_connected">Network connected</string>
+    <string name="event_network_disconnected">Network disconnected</string>
+    <string name="event_fullscreen_enter">Enter fullscreen</string>
+    <string name="event_fullscreen_exit">Exit fullscreen</string>
+    <string name="event_status_bar_shown">Status bar shown</string>
+    <string name="event_status_bar_hidden">Status bar hidden</string>
+    <string name="event_nav_bar_shown">Navigation bar shown</string>
+    <string name="event_nav_bar_hidden">Navigation bar hidden</string>
+
+    <string name="action_delay">Delay</string>
+    <string name="action_input_key">Input key</string>
+    <string name="action_input_text">Input text</string>
+    <string name="action_input_tap">Input tap</string>
+    <string name="action_input_swipe">Input swipe</string>
+    <string name="action_launch_activity">Launch activity</string>
+    <string name="action_set_variable">Set variable</string>
+    <string name="action_toggle_variable">Toggle variable</string>
+    <string name="action_show_toast">Show toast</string>
+    <string name="action_speak_text">Speak text</string>
+    <string name="action_post_notification">Post notification</string>
+    <string name="action_wake_screen">Wake screen</string>
+    <string name="action_power_dialog">Power menu</string>
+    <string name="action_reboot">Reboot</string>
+    <string name="action_shutdown">Power off</string>
+    <string name="action_rotation_auto">Auto rotation</string>
+    <string name="action_rotation_portrait">Lock portrait</string>
+    <string name="action_rotation_landscape">Lock landscape</string>
+    <string name="action_floating_tools">Floating tools</string>
+    <string name="action_pointer">Gesture pointer</string>
+    <string name="action_screen_pen">Screen pen</string>
+    <string name="action_screen_filter">Screen filter</string>
+
+    <string name="cond_screen_on">Screen on</string>
+    <string name="cond_keyguard_locked">Keyguard locked</string>
+    <string name="cond_power_saver">Power saver on</string>
+    <string name="cond_airplane_mode">Airplane mode on</string>
+    <string name="cond_headset_connected">Headset connected</string>
+    <string name="cond_battery_at_least">Battery at least…</string>
+    <string name="cond_battery_at_most">Battery at most…</string>
+    <string name="cond_time_between">Time between…</string>
+    <string name="cond_wifi_ssid">Connected Wi-Fi SSID…</string>
+    <string name="cond_variable_equals">Variable equals…</string>
+    <string name="cond_variable_exists">Variable exists…</string>
+
+    <string name="automation_save">Save</string>
+    <string name="automation_value">Value</string>
+    <string name="automation_name">Name</string>
+    <string name="automation_keycode">Key code</string>
+    <string name="automation_component">Component (package/class)</string>
+    <string name="automation_duration_ms">Duration (ms)</string>
+    <string name="automation_coordinates">Coordinates</string>
+    <string name="automation_message">Message</string>
+    <string name="automation_time">Time (HH:mm)</string>
+</resources>
