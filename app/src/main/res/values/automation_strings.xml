@@ -32,6 +32,8 @@
     <string name="action_input_tap">Input tap</string>
     <string name="action_input_swipe">Input swipe</string>
     <string name="action_launch_activity">Launch activity</string>
+    <string name="action_freeze_app">Freeze app</string>
+    <string name="action_unfreeze_app">Unfreeze app</string>
     <string name="action_set_variable">Set variable</string>
     <string name="action_toggle_variable">Toggle variable</string>
     <string name="action_show_toast">Show toast</string>
