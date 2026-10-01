@@ -23,16 +23,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.fan.edgex.R
-import com.fan.edgex.license.PremiumActivator
 import com.fan.edgex.config.AppConfig
 import com.fan.edgex.config.ModuleActivationState
 import com.fan.edgex.config.configPrefs
 import com.fan.edgex.config.getConfigBool
 import com.fan.edgex.config.getConfigString
 import com.fan.edgex.config.putConfig
+import com.fan.edgex.license.PremiumActivator
 import com.fan.edgex.ui.compose.components.EdgeXToast
 import com.fan.edgex.ui.compose.components.UpdateDialog
 import com.fan.edgex.ui.compose.screens.AboutScreen
+import com.fan.edgex.ui.compose.screens.AutomationScreen
+import com.fan.edgex.ui.compose.screens.CustomPanelScreen
 import com.fan.edgex.ui.compose.screens.EdgeLightingScreen
 import com.fan.edgex.ui.compose.screens.FluidEffectScreen
 import com.fan.edgex.ui.compose.screens.FreezerScreen
@@ -43,7 +45,6 @@ import com.fan.edgex.ui.compose.screens.HomeStats
 import com.fan.edgex.ui.compose.screens.KeysScreen
 import com.fan.edgex.ui.compose.screens.MultiScreen
 import com.fan.edgex.ui.compose.screens.PieScreen
-import com.fan.edgex.ui.compose.screens.CustomPanelScreen
 import com.fan.edgex.ui.compose.screens.PremiumScreen
 import com.fan.edgex.ui.compose.screens.SideBarScreen
 import com.fan.edgex.ui.compose.screens.ThemeScreen
@@ -63,6 +64,7 @@ enum class EdgeXRoute(@StringRes val labelRes: Int) {
     CustomPanel(R.string.menu_custom_panel),
     SideBar(R.string.menu_side_bar),
     Multi(R.string.menu_multi_actions),
+    Automation(R.string.menu_automation),
     Theme(R.string.header_theme),
     EdgeLighting(R.string.menu_edge_lighting),
     FluidEffect(R.string.menu_fluid_effect),
@@ -215,6 +217,10 @@ fun EdgeXApp() {
                         onBack = ::popRoute,
                     )
                     EdgeXRoute.Multi -> MultiScreen(
+                        onBack = ::popRoute,
+                        showToast = ::showToast,
+                    )
+                    EdgeXRoute.Automation -> AutomationScreen(
                         onBack = ::popRoute,
                         showToast = ::showToast,
                     )
