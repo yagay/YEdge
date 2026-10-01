@@ -14,6 +14,7 @@ import de.robv.android.xposed.XposedBridge
 internal object AutomationKeyManager {
     private const val TAG = "EdgeX:CustomKey"
     private const val CACHE_TTL_MS = 2_000L
+    private const val INJECTED_EVENT_FLAG = 0x04000000
 
     private val handler = Handler(Looper.getMainLooper())
     private var cachedAt = 0L
@@ -25,18 +26,22 @@ internal object AutomationKeyManager {
     private val seenEventKeys = LinkedHashSet<String>()
 
     fun handleKeyEvent(event: KeyEvent, context: Context, policyFlags: Int = 0): Boolean {
-        if (event.flags and KeyEvent.FLAG_FROM_SYSTEM == 0 && policyFlags != 0) {
-            // Still allow physical OEM keys with unusual flags; injected events are deduped below.
-        }
-
-        val eventIdentity = "${event.keyCode}:${event.action}:${event.eventTime}:${event.repeatCount}"
-        synchronized(seenEventKeys) {
-            if (!seenEventKeys.add(eventIdentity)) return false
-            while (seenEventKeys.size > 64) seenEventKeys.remove(seenEventKeys.first())
-        }
+        // Never feed injected key actions back into a custom-key rule. This protects
+        // input-key actions and OEM key remaps from recursive loops.
+        if (policyFlags and INJECTED_EVENT_FLAG != 0) return false
 
         val rules = rulesFor(event.keyCode)
         if (rules.isEmpty()) return false
+
+        // InputManagerService can surface the same physical KeyEvent through both
+        // interceptKeyBeforeDispatching and filterInputEvent. Once a configured custom
+        // key is handled, consume the duplicate path too instead of allowing the built-in
+        // key state machine to see a second copy.
+        val eventIdentity = "${event.keyCode}:${event.action}:${event.eventTime}:${event.repeatCount}"
+        synchronized(seenEventKeys) {
+            if (!seenEventKeys.add(eventIdentity)) return true
+            while (seenEventKeys.size > 64) seenEventKeys.remove(seenEventKeys.first())
+        }
 
         return when (event.action) {
             KeyEvent.ACTION_DOWN -> handleDown(event, context, rules)
@@ -52,6 +57,11 @@ internal object AutomationKeyManager {
         pendingClicks.clear()
         longPressed.clear()
         lastUpAt.clear()
+        synchronized(seenEventKeys) { seenEventKeys.clear() }
+    }
+
+    fun invalidateConfig() {
+        cachedAt = 0L
     }
 
     private fun handleDown(
