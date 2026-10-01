@@ -8,152 +8,78 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.EdgeX">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EdgeX">
 
         <meta-data
-                android:name="xposedmodule"
-                android:value="true" />
+            android:name="xposedmodule"
+            android:value="true" />
         <meta-data
-                android:name="xposeddescription"
-                android:value="Gesture Control Module" />
+            android:name="xposeddescription"
+            android:value="Gesture Control Module" />
         <meta-data
-                android:name="xposedminversion"
-                android:value="82" />
+            android:name="xposedminversion"
+            android:value="82" />
         <meta-data
-                android:name="xposedscope"
-                android:value="android" />
+            android:name="xposedscope"
+            android:value="android" />
 
         <activity
-                android:name=".ui.MainActivity"
-                android:exported="true">
+            android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity
-            android:name=".ui.GesturesActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
+
+        <activity android:name=".ui.GesturesActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.FreezerActivity" android:exported="false" android:theme="@style/Theme.EdgeX" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.ThemeActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.ActionSelectionActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.ShortcutSelectionActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.ShellCommandActivity" android:exported="false" android:theme="@style/Theme.EdgeX" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.KeysActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.SubGestureActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.AppSelectionActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.MusicControlActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.FastScrollActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.PieSettingsActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.EdgeLightingSettingsActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.EdgeLightingAppFilterActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.FluidEffectSettingsActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.MultiActionsListActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.MultiActionEditActivity" android:exported="false" android:theme="@style/Theme.EdgeX" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.AppIconPickerActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.PanelConfigActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.ConditionActionActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.ConditionPickerActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
+        <activity android:name=".ui.PremiumActivity" android:exported="false" android:theme="@style/Theme.EdgeX" />
 
         <activity
-            android:name=".ui.FreezerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX"
-            android:windowSoftInputMode="adjustResize"/>
+            android:name=".automation.PointerActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.EdgeX.AutomationOverlay" />
 
         <activity
-            android:name=".ui.ThemeActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.ActionSelectionActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.ShortcutSelectionActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.ShellCommandActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".ui.KeysActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.SubGestureActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.AppSelectionActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.MusicControlActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.FastScrollActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.PieSettingsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.EdgeLightingSettingsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.EdgeLightingAppFilterActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.FluidEffectSettingsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.MultiActionsListActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.MultiActionEditActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".ui.AppIconPickerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-                android:name=".ui.PanelConfigActivity"
-                android:exported="false"
-                android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.ConditionActionActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.ConditionPickerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
-
-        <activity
-            android:name=".ui.PremiumActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EdgeX" />
+            android:name=".automation.ScreenPenActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.EdgeX.AutomationOverlay" />
 
         <receiver
             android:name=".config.ConfigSnapshotReceiver"
@@ -164,13 +90,17 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".config.ShellExecutorService"
-            android:exported="true" />
+        <receiver
+            android:name=".automation.AutomationFeedbackReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.fan.edgex.AUTOMATION_FEEDBACK" />
+            </intent-filter>
+        </receiver>
 
-        <service
-            android:name=".license.KeystoreVerifierService"
-            android:exported="true" />
+        <service android:name=".config.ShellExecutorService" android:exported="true" />
+        <service android:name=".license.KeystoreVerifierService" android:exported="true" />
+        <service android:name=".automation.FloatingToolService" android:exported="true" />
 
         <service
             android:name=".service.NotificationEdgeService"
