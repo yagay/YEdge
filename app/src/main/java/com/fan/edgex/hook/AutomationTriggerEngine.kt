@@ -180,10 +180,20 @@ internal object AutomationTriggerEngine {
                         val am = ctx.getSystemService(ActivityManager::class.java)
                         @Suppress("DEPRECATION")
                         val current = am?.getRunningTasks(1)?.firstOrNull()?.topActivity?.packageName
-                        if (!current.isNullOrBlank() && current != lastForegroundPackage) {
+                        val previous = lastForegroundPackage
+                        if (!current.isNullOrBlank() && current != previous) {
+                            if (!previous.isNullOrBlank()) {
+                                rules.filter {
+                                    it.packageName == previous && it.state == AutomationConfig.APP_STATE_EXIT
+                                }.forEach { rule ->
+                                    dispatch(ctx, rule.action, "foreground_exit:${rule.packageName}")
+                                }
+                            }
                             lastForegroundPackage = current
-                            rules.filter { it.packageName == current }.forEach { rule ->
-                                dispatch(ctx, rule.action, "foreground:${rule.packageName}")
+                            rules.filter {
+                                it.packageName == current && it.state == AutomationConfig.APP_STATE_ENTER
+                            }.forEach { rule ->
+                                dispatch(ctx, rule.action, "foreground_enter:${rule.packageName}")
                             }
                         }
                     } else {
