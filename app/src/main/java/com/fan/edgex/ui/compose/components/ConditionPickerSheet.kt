@@ -13,6 +13,7 @@ data class ConditionItem(
     val labelRes: Int,
     val code: String,
     val iconRes: Int,
+    val needsParameter: Boolean = false,
 )
 
 val allConditionItems = listOf(
@@ -30,6 +31,17 @@ val allConditionItems = listOf(
     ConditionItem(R.string.cond_media_playing, "media_playing", R.drawable.ic_music),
     ConditionItem(R.string.cond_screen_portrait, "screen_portrait", R.drawable.ic_screen_portrait),
     ConditionItem(R.string.cond_screen_landscape, "screen_landscape", R.drawable.ic_screen_landscape),
+    ConditionItem(R.string.cond_screen_on, "screen_on", R.drawable.ic_power),
+    ConditionItem(R.string.cond_keyguard_locked, "keyguard_locked", R.drawable.ic_power),
+    ConditionItem(R.string.cond_power_saver, "power_saver", R.drawable.ic_power),
+    ConditionItem(R.string.cond_airplane_mode, "airplane_mode", R.drawable.ic_link),
+    ConditionItem(R.string.cond_headset_connected, "headset_connected", R.drawable.ic_music),
+    ConditionItem(R.string.cond_battery_at_least, "battery_at_least", R.drawable.ic_power, needsParameter = true),
+    ConditionItem(R.string.cond_battery_at_most, "battery_at_most", R.drawable.ic_power, needsParameter = true),
+    ConditionItem(R.string.cond_time_between, "time_between", R.drawable.ic_condition, needsParameter = true),
+    ConditionItem(R.string.cond_wifi_ssid, "wifi_ssid", R.drawable.ic_wifi, needsParameter = true),
+    ConditionItem(R.string.cond_variable_equals, "variable_equals", R.drawable.ic_condition, needsParameter = true),
+    ConditionItem(R.string.cond_variable_exists, "variable_exists", R.drawable.ic_condition, needsParameter = true),
 )
 
 @Composable
