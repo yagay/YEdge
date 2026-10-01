@@ -40,6 +40,16 @@ fun Context.putConfigsSync(vararg entries: Pair<String, String>): Boolean {
     return committed
 }
 
+/** Remove runtime config keys and publish a full snapshot so system_server drops them too. */
+fun Context.removeConfigs(vararg keys: String): Boolean {
+    if (keys.isEmpty()) return true
+    val committed = configPrefs().edit().apply {
+        keys.forEach(::remove)
+    }.commit()
+    if (committed) broadcastFullConfigSnapshot()
+    return committed
+}
+
 fun Context.broadcastFullConfigSnapshot() {
     HookConfigSnapshot.writeFromPreferences(this)
     val values = configPrefs().all
