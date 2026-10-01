@@ -13,6 +13,7 @@ import com.fan.edgex.config.getConfigString
 import com.fan.edgex.config.putConfig
 import com.fan.edgex.config.putConfigsSync
 import com.fan.edgex.ui.compose.components.ActionSelectionSheet
+import com.fan.edgex.ui.compose.components.ConditionParameterSheet
 import com.fan.edgex.ui.compose.components.ConditionPickerSheet
 import com.fan.edgex.ui.compose.components.EdgeXBottomSheet
 import com.fan.edgex.ui.compose.components.EdgeXDivider
@@ -38,14 +39,13 @@ fun ConditionSheet(
     val colors = LocalEdgeXColors.current
     val none = stringResource(R.string.action_none)
     var refreshTick by remember { mutableStateOf(0) }
-    // Re-resolve the condition when this sheet is reopened for another action step.
     var condId by remember(open, prefKey) { mutableStateOf("") }
-    var pickingBranch by remember { mutableStateOf<String?>(null) } // "then" or "else"
+    var pickingBranch by remember { mutableStateOf<String?>(null) }
     var secondarySheet by remember { mutableStateOf<SecondaryType?>(null) }
     var showConditionPicker by remember { mutableStateOf(false) }
     var showForegroundAppConfig by remember { mutableStateOf(false) }
+    var parameterCondition by remember { mutableStateOf<String?>(null) }
 
-    // Resolve or create condition ID when sheet opens
     if (open && condId.isBlank()) {
         val existing = context.getConfigString(prefKey, "")
         val extracted = ConditionStore.extractId(existing)
@@ -59,6 +59,7 @@ fun ConditionSheet(
         onDismissRequest = {
             pickingBranch = null
             secondarySheet = null
+            parameterCondition = null
             onSaved()
         },
     ) {
@@ -67,7 +68,6 @@ fun ConditionSheet(
         val elseLabel = context.getConfigString(ConditionStore.condElseLabelKey(condId), none)
 
         EdgeXListGroup {
-            // If row - opens Compose ConditionPickerSheet
             EdgeXRow(
                 title = stringResource(R.string.cond_label_if),
                 subtitle = ifLabel + refreshTick.let { "" },
@@ -78,7 +78,6 @@ fun ConditionSheet(
             }
             EdgeXDivider()
 
-            // Then row
             EdgeXRow(
                 title = stringResource(R.string.cond_label_then),
                 subtitle = thenLabel + refreshTick.let { "" },
@@ -89,7 +88,6 @@ fun ConditionSheet(
             }
             EdgeXDivider()
 
-            // Else row
             EdgeXRow(
                 title = stringResource(R.string.cond_label_else),
                 subtitle = elseLabel + refreshTick.let { "" },
@@ -106,16 +104,32 @@ fun ConditionSheet(
         onDismiss = { showConditionPicker = false },
         onSelect = { item ->
             showConditionPicker = false
-            if (item.code == ConditionStore.FOREGROUND_APP) {
-                showForegroundAppConfig = true
-            } else {
-                context.putConfigsSync(
-                    ConditionStore.condIfKey(condId) to item.code,
-                    ConditionStore.condIfLabelKey(condId) to context.getString(item.labelRes),
-                    ConditionStore.foregroundPackagesKey(condId) to "",
-                )
-                refreshTick++
+            when {
+                item.code == ConditionStore.FOREGROUND_APP -> showForegroundAppConfig = true
+                item.needsParameter -> parameterCondition = item.code
+                else -> {
+                    context.putConfigsSync(
+                        ConditionStore.condIfKey(condId) to item.code,
+                        ConditionStore.condIfLabelKey(condId) to context.getString(item.labelRes),
+                        ConditionStore.foregroundPackagesKey(condId) to "",
+                    )
+                    refreshTick++
+                }
             }
+        },
+    )
+
+    ConditionParameterSheet(
+        baseCode = parameterCondition,
+        onDismiss = { parameterCondition = null },
+        onSave = { code, label ->
+            context.putConfigsSync(
+                ConditionStore.condIfKey(condId) to code,
+                ConditionStore.condIfLabelKey(condId) to label,
+                ConditionStore.foregroundPackagesKey(condId) to "",
+            )
+            parameterCondition = null
+            refreshTick++
         },
     )
 
@@ -165,7 +179,6 @@ fun ConditionSheet(
                     context.putConfig(branchPrefKey, action.code)
                     context.putConfig("${branchPrefKey}_label", context.getString(action.labelRes))
                     refreshTick++
-                    // Update the condition summary label
                     val ifLbl = context.getConfigString(ConditionStore.condIfLabelKey(condId), none)
                     val thenLbl = context.getConfigString(ConditionStore.condThenLabelKey(condId), none)
                     val elseLbl = context.getConfigString(ConditionStore.condElseLabelKey(condId), none)
