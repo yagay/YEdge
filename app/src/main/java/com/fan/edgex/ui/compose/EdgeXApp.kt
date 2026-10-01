@@ -10,7 +10,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.fan.edgex.R
 import com.fan.edgex.config.AppConfig
 import com.fan.edgex.config.ModuleActivationState
@@ -207,36 +211,18 @@ fun EdgeXApp() {
                         onBack = ::popRouteAndRefresh,
                         showToast = ::showToast,
                     )
-                    EdgeXRoute.Pie -> PieScreen(
-                        onBack = ::popRoute,
-                    )
-                    EdgeXRoute.CustomPanel -> CustomPanelScreen(
-                        onBack = ::popRoute,
-                    )
-                    EdgeXRoute.SideBar -> SideBarScreen(
-                        onBack = ::popRoute,
-                    )
-                    EdgeXRoute.Multi -> MultiScreen(
-                        onBack = ::popRoute,
-                        showToast = ::showToast,
-                    )
-                    EdgeXRoute.Automation -> AutomationScreen(
-                        onBack = ::popRoute,
-                        showToast = ::showToast,
-                    )
+                    EdgeXRoute.Pie -> PieScreen(onBack = ::popRoute)
+                    EdgeXRoute.CustomPanel -> CustomPanelScreen(onBack = ::popRoute)
+                    EdgeXRoute.SideBar -> SideBarScreen(onBack = ::popRoute)
+                    EdgeXRoute.Multi -> MultiScreen(onBack = ::popRoute, showToast = ::showToast)
+                    EdgeXRoute.Automation -> AutomationScreen(onBack = ::popRoute, showToast = ::showToast)
                     EdgeXRoute.Theme -> ThemeScreen(
                         onBack = ::popRouteAndRefresh,
                         onThemeChanged = ::refresh,
                         showToast = ::showToast,
                     )
-                    EdgeXRoute.EdgeLighting -> EdgeLightingScreen(
-                        onBack = ::popRoute,
-                        showToast = ::showToast,
-                    )
-                    EdgeXRoute.FluidEffect -> FluidEffectScreen(
-                        onBack = ::popRoute,
-                        showToast = ::showToast,
-                    )
+                    EdgeXRoute.EdgeLighting -> EdgeLightingScreen(onBack = ::popRoute, showToast = ::showToast)
+                    EdgeXRoute.FluidEffect -> FluidEffectScreen(onBack = ::popRoute, showToast = ::showToast)
                     EdgeXRoute.Premium -> PremiumScreen(
                         onBack = ::popRoute,
                         onOpenEdgeLighting = { stack.add(EdgeXRoute.EdgeLighting) },
@@ -249,6 +235,17 @@ fun EdgeXApp() {
                         onCheckForUpdates = ::checkForUpdates,
                         onOpenSupportAuthor = { stack.add(EdgeXRoute.Premium) },
                     )
+                }
+            }
+
+            if (route == EdgeXRoute.Home) {
+                FilledTonalButton(
+                    onClick = { stack.add(EdgeXRoute.Automation) },
+                    modifier = Modifier
+                        .align(androidx.compose.ui.Alignment.BottomEnd)
+                        .padding(16.dp),
+                ) {
+                    Text(stringResource(R.string.menu_automation))
                 }
             }
 
@@ -288,10 +285,7 @@ private fun Context.readHomeUiState(): HomeUiState =
         gesturesEnabled = getConfigBool(AppConfig.GESTURES_ENABLED),
         debug = getConfigBool(AppConfig.DEBUG_MATRIX),
         haptic = getConfigBool(AppConfig.HAPTIC_FEEDBACK, default = true),
-        hapticType = getConfigString(
-            AppConfig.HAPTIC_FEEDBACK_TYPE,
-            AppConfig.HAPTIC_FEEDBACK_TYPE_CLICK,
-        ),
+        hapticType = getConfigString(AppConfig.HAPTIC_FEEDBACK_TYPE, AppConfig.HAPTIC_FEEDBACK_TYPE_CLICK),
         arcDrawer = getConfigBool(AppConfig.FREEZER_ARC_DRAWER),
         keysEnabled = getConfigBool(AppConfig.KEYS_ENABLED),
         edgeLighting = getConfigBool(AppConfig.EDGE_LIGHTING_ENABLED, default = true),
@@ -303,9 +297,9 @@ private fun Context.readHomeUiState(): HomeUiState =
                 "dark" -> true
                 "light" -> false
                 "system" -> (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
-                        android.content.res.Configuration.UI_MODE_NIGHT_YES
+                    android.content.res.Configuration.UI_MODE_NIGHT_YES
                 else -> darkSetting.toBooleanStrictOrNull() ?: ((resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
-                        android.content.res.Configuration.UI_MODE_NIGHT_YES)
+                    android.content.res.Configuration.UI_MODE_NIGHT_YES)
             }
         },
         premiumStatus = PremiumActivator.status(this),
