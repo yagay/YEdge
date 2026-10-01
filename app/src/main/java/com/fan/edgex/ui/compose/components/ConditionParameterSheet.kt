@@ -40,7 +40,7 @@ fun ConditionParameterSheet(
     }
 
     val valid = when (code) {
-        "battery_at_least", "battery_at_most" -> first.toIntOrNull() in 0..100
+        "battery_at_least", "battery_at_most" -> first.toIntOrNull()?.let { it in 0..100 } == true
         "time_between" -> isValidTime(first) && isValidTime(second)
         "wifi_ssid" -> first.isNotBlank()
         "variable_equals" -> first.isNotBlank()
